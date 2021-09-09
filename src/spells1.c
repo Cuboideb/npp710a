@@ -1229,12 +1229,20 @@ void take_hit(int dam, cptr kb_str)
 		/* Hack -- bell on first notice */
 		if (old_chp > warning)
 		{
-			bell("Low hitpoint warning!");
+			/*bell("Low hitpoint warning! Press space to continue");*/
+			clear_message_line();
+			message(MSG_HITPOINT_WARN, 0, "Low hitpoint warning! Press space to continue ");
+			flush();
+			while (true) {
+				char ch = inkey();
+				if (ch == ' ') break;
+			}
 		}
-
-		/* Message */
-		message(MSG_HITPOINT_WARN, 0, "*** LOW HITPOINT WARNING! ***");
-		message_flush();
+		else {
+			/* Message */
+			message(MSG_HITPOINT_WARN, 0, "*** LOW HITPOINT WARNING! ***");
+			message_flush();
+		}
 	}
 }
 
@@ -6234,8 +6242,8 @@ bool project_p(int who, int y, int x, int dam, int typ, cptr msg)
 				}
 
 				/* Reduce damage if missile did not get deflected. */
-				else dam -= (dam * ((p_ptr->state.ac + (p_ptr->state.to_a < 150) ?
-				                 p_ptr->state.ac + p_ptr->state.to_a : 150)) / 250);
+				else dam -= (dam * ((p_ptr->state.ac + p_ptr->state.to_a < 150) ?
+				                 (p_ptr->state.ac + p_ptr->state.to_a) : 150) / 250);
 			}
 
 			if (dam)

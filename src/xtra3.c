@@ -439,7 +439,7 @@ static void prt_health(int row, int col, const monster_type *m_ptr)
 	/* Tracking an unseen, hallucinatory, or dead monster */
 	else if ((!m_ptr->ml) || /* Unseen */
 			(p_ptr->timed[TMD_IMAGE]) || /* Hallucination */
-			(m_ptr->ml < 0)) /* Dead (?) */
+			(m_ptr->hp < 0)) /* Dead (?) */
 	{
 		/* The monster health is "unknown" */
 		Term_putstr(col, row, 12, attr, "<Unknown>");
@@ -476,7 +476,7 @@ static void prt_health(int row, int col, const monster_type *m_ptr)
 		Term_putstr(col, row, 12, TERM_WHITE, "----------]");
 
 		Term_putstr(col, row, 11, TERM_WHITE, "----------]");
-				
+
 		Term_putstr(col+10, row, 1, monster_hilite_attr(m_ptr), "]");
 
 		/* Dump the current "health" (handle monster stunning, confusion) */
@@ -701,7 +701,7 @@ static void prt_depth(int row, int col)
 static void prt_mon_mana(int row, int col, const monster_type *m_ptr)
 {
 	byte hilite = monster_hilite_attr(m_ptr);
-	
+
 	/* Not alive, or no mana */
 	if (!m_ptr->r_idx)
 	{
@@ -725,7 +725,7 @@ static void prt_mon_mana(int row, int col, const monster_type *m_ptr)
 	}
 
 	/* Tracking a dead monster (?) */
-	else if (!m_ptr->hp < 0)
+	else if (m_ptr->hp < 0)
 	{
 
 		/* Indicate that the monster health is "unknown" */
@@ -756,7 +756,7 @@ static void prt_mon_mana(int row, int col, const monster_type *m_ptr)
 
 		/* Default to "unknown" */
 		Term_putstr(col, row, 12, TERM_WHITE, "[----------]");
-		
+
 		Term_putstr(col+11, row, 1, hilite, "]");
 		Term_putstr(col, row, 1, hilite, "[");
 

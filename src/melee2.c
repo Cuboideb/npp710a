@@ -1766,7 +1766,7 @@ static int choose_ranged_attack(int m_idx, int *tar_y, int *tar_x)
 		if (projectable(fy, fx, p_ptr->py, p_ptr->px, PROJECT_NONE))
 		{
 			clear_ball_spell = FALSE;
-		monster_blocking = TRUE;
+			monster_blocking = TRUE;
 		}
 
 		/*are we in range (and not stupid), and have access to ball spells?*/
@@ -1925,7 +1925,7 @@ static int choose_ranged_attack(int m_idx, int *tar_y, int *tar_x)
 	/* Figure out if we want mana */
 	if (m_ptr->mana < r_ptr->mana/4) want_mana +=2;
 	else if (m_ptr->mana < r_ptr->mana/2) want_mana++;
-	else if (m_ptr->mana == m_ptr->mana) f6 &= ~(RF6_ADD_MANA);
+	else if (m_ptr->mana == r_ptr->mana) f6 &= ~(RF6_ADD_MANA);
 
 	/* Figure out if we want to scram */
 	if (want_hps) want_escape = want_hps - 1;
@@ -3388,6 +3388,13 @@ static bool get_move_retreat(monster_type *m_ptr, int *ty, int *tx)
 	*ty = -(p_ptr->py - m_ptr->fy);
 	*tx = -(p_ptr->px - m_ptr->fx);
 
+	/* Paranoia */
+	if (!in_bounds(*ty,*tx)) {
+		/* Charge! */
+		*ty = p_ptr->py;
+		*tx = p_ptr->px;
+	}
+
 	/* We want to run away */
 	return (TRUE);
 }
@@ -4063,6 +4070,11 @@ static bool make_move(monster_type *m_ptr, int *ty, int *tx, bool fear,
 	bool look_again = FALSE;
 
 	int chance;
+
+	/* Sanity check */
+	if (!in_bounds(*ty, *tx)) {
+		return (FALSE);
+	}
 
 	/* Remember where monster is */
 	oy = m_ptr->fy;
