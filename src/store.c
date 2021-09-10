@@ -5289,7 +5289,7 @@ void do_cmd_store(cmd_code code, cmd_arg args[])
 
 		/* Wipe the menu and set it up */
 		WIPE(&menu, menu);
-		menu.flags = MN_DBL_TAP;
+		/*menu.flags = MN_DBL_TAP;*/
 
 		/* Calculate the positions of things and redraw */
 		store_flags = STORE_INIT_CHANGE;
