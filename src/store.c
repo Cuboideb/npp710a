@@ -2223,7 +2223,7 @@ static bool store_will_buy(int store_num, const object_type *o_ptr)
 				case TV_SCROLL:
 				case TV_POTION:
 				case TV_HAFTED:
-			break;
+					break;
 				case TV_POLEARM:
 				case TV_SWORD:
 				{
@@ -2231,7 +2231,7 @@ static bool store_will_buy(int store_num, const object_type *o_ptr)
 					if (is_blessed(o_ptr) && object_known_p(o_ptr)) break;
 				}
 				default:
-				return (FALSE);
+					return (FALSE);
 			}
 			break;
 		}
